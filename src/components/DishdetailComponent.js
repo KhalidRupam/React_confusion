@@ -1,38 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardImg,CardTitle,CardImgOverlay,CardBody,CardText } from 'reactstrap';
 
 
-class Dishdetail extends Component{
-    
-    constructor(props){
-        super(props)
-    }
 
-    dateformat({ date }) {
-        
+    function dateformat({ date }) {
         var d= new Date(date).toLocaleDateString("en-US", {
           year: "numeric",
           month: "short",
           day: "numeric"
         });
-
         return d;
-      }
+    }
 
-    renderComment(comments){
-        const com = comments.map((comselect)=>{
-           let date= comselect.date;
-            return(
-                <div>
-                    <p>{comselect.comment}</p>
-                    <p>--{comselect.author},{this.dateformat({date})}</p>
-                </div>
-            );
-        })
+    function RenderComment({comments}){
+        var com=null;
+        if(comments==null)
+        {
+            console.log("empty");
+        }
+        else{
+            com = comments.map((comselect)=>{
+                let date= comselect.date;
+                 return(
+                     <ul  className="list-unstyled">
+                         <p>{comselect.comment}</p>
+                         <p>--{comselect.author},<dateformat date ={date}/></p>
+                     </ul>
+                 )
+                     
+             });
+        }
+        
         return(com);
     }
     
-    renderDish(dish){
+    function RenderDish({dish}){
         if (dish!=null) {
             return(
                  <Card key={dish.id}>
@@ -56,22 +58,31 @@ class Dishdetail extends Component{
             }
     }
 
-    render(){
-        const Dishdetail=this.props.dishes;
+    const Dishdetail = (props) =>{
+        const dishdetail=props.dishes;
+        console.log("Done");
+        var comments;
+        if(props.dishes)
+        {
+            console.log("In iF");
+            console.log(props.dishes.comments);
+            comments=props.dishes.comments;
+        }
+        else
+        {
+            console.log("In else");
+            console.log(props.dishes);
+        }
         return(
             <div className="row">
                 <div  className="col-12 col-md-5 m-1">
-                    {this.renderDish(Dishdetail)}
+                    <RenderDish dish={dishdetail}/>
                 </div>
                 <div  className="col-12 col-md-5 m-1">
-                   <h4>Comment</h4>
-                  {this.renderComment(Dishdetail.comments)}
+                   <h4>Comments</h4>
+                  <RenderComment comments={comments}/>
                 </div>
             </div>
         );
-        
-       
     }
-}
-
 export default Dishdetail;
