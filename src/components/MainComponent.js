@@ -21,8 +21,20 @@ class Main extends Component {
       comments: COMMENTS,
       promotions : PROMOTIONS
     };
+    console.log("DISHES");
+    console.log(DISHES);
   }
+  
    render() {
+
+    const DishWithId=({match})=>{
+      
+      return(
+        <Dishdetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+            comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+      );
+    }
+
      const HomePage=()=>{
        return(
         <Home dish ={this.state.dishes.filter((dish)=>dish.featured)[0]}
@@ -32,11 +44,14 @@ class Main extends Component {
        );
      }
       return (
+        
         <div >
+         
           < Header/>
           <Switch>
               <Route path="/home" component={HomePage}></Route>
               <Route exact path="/menu" component={()=> <Menu dishes = {this.state.dishes}/>}></Route>
+              <Route path="/menu/:dishId" component={DishWithId}></Route>
               <Route exact path="/contactus" component={Contact} ></Route>
               <Redirect to= "/home"></Redirect>
           </Switch>

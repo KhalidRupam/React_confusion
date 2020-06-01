@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, CardImg,CardTitle,CardImgOverlay,CardBody,CardText } from 'reactstrap';
-
+import { Card, CardImg, CardText, CardBody,
+    CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 
     function dateformat({ date }) {
@@ -36,8 +37,11 @@ import { Card, CardImg,CardTitle,CardImgOverlay,CardBody,CardText } from 'reacts
     
     function RenderDish({dish}){
         if (dish!=null) {
+            console.log("if");
             return(
+                
                  <Card key={dish.id}>
+                     <h3>Return</h3>
                      <CardImg top src={dish.image} alt={dish.name}></CardImg>
                          <CardBody>
                             <CardTitle>
@@ -52,6 +56,7 @@ import { Card, CardImg,CardTitle,CardImgOverlay,CardBody,CardText } from 'reacts
             }
             else
             {
+                console.log("else");
                 return(
                     <div></div>
                 );
@@ -59,30 +64,31 @@ import { Card, CardImg,CardTitle,CardImgOverlay,CardBody,CardText } from 'reacts
     }
 
     const Dishdetail = (props) =>{
-        const dishdetail=props.dishes;
-        console.log("Done");
-        var comments;
-        if(props.dishes)
-        {
-            console.log("In iF");
-            console.log(props.dishes.comments);
-            comments=props.dishes.comments;
-        }
-        else
-        {
-            console.log("In else");
-            console.log(props.dishes);
-        }
+        console.log("props.dish");
+        console.log(props.dish);
         return(
-            <div className="row">
-                <div  className="col-12 col-md-5 m-1">
-                    <RenderDish dish={dishdetail}/>
+            <div className="container">
+                <div className="row">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <div className="col-12">
+                            <h3>{props.dish.name}</h3>
+                        <hr />  
+                        </div>     
                 </div>
-                <div  className="col-12 col-md-5 m-1">
-                   <h4>Comments</h4>
-                  <RenderComment comments={comments}/>
+                <div className="row">
+                    <div  className="col-12 col-md-5 m-1">
+                        <RenderDish dish={props.dish}/>
+                    </div>
+                    <div  className="col-12 col-md-5 m-1">
+                    <h4>Comments</h4>
+                        <RenderComment comments={props.comments}/>
+                    </div>
                 </div>
             </div>
+            
         );
     }
 export default Dishdetail;
